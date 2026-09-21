@@ -292,16 +292,12 @@
       const chk6 = document.getElementById('tipo_6'); // "Ninguno"
       const chk7 = document.getElementById('tipo_7'); // "Otro"
 
-      // Lógica de exclusión mutua
       if (clickedEl && clickedEl.id === 'tipo_6' && clickedEl.checked) {
-        // Si marca "Ninguno", se desmarcan las demás
         chk1.checked = chk2.checked = chk3.checked = chk4.checked = chk5.checked = chk7.checked = false;
       } else if (clickedEl && clickedEl.id !== 'tipo_6' && clickedEl.checked) {
-        // Si marca cualquier otra, se desmarca "Ninguno"
         chk6.checked = false;
       }
 
-      // Evaluar visibilidad general
       const anyChecked = chk1.checked || chk2.checked || chk3.checked || chk4.checked || chk5.checked || chk6.checked || chk7.checked;
 
       const secSubcat = document.getElementById('sec-subcat');
@@ -310,14 +306,12 @@
       const secOther = document.getElementById('sec-other');
       const secConfirm = document.getElementById('sec-confirm');
 
-      // Alternar clases de ocultación
       secSubcat.classList.toggle('hidden', !chk1.checked);
       secCommon.classList.toggle('hidden', !(chk1.checked || chk2.checked || chk3.checked || chk4.checked));
       secInsider.classList.toggle('hidden', !chk5.checked);
       secOther.classList.toggle('hidden', !chk7.checked);
       secConfirm.classList.toggle('hidden', !anyChecked);
 
-      // Gestionar obligatoriedad (required) para no trabar el envío si los campos están ocultos
       document.querySelectorAll('.req-common').forEach(el => el.removeAttribute('required'));
       document.getElementById('req-other').removeAttribute('required');
 
@@ -337,7 +331,7 @@
 
     function cancelForm() {
       document.getElementById('coi-form').reset();
-      handleTypeChange(null); // Resetea visibilidad
+      handleTypeChange(null);
       viewForm.classList.add('hidden');
       viewIntro.classList.remove('hidden');
       window.scrollTo(0, 0);
@@ -369,7 +363,6 @@
       btnSubmit.innerText = "Enviando...";
       btnSubmit.disabled = true;
 
-      // Obtener datos para enviar a Python
       const nombre = document.getElementById('cand-nombre').value;
       const rut = document.getElementById('cand-rut').value;
       const correo = document.getElementById('cand-correo').value;
@@ -392,7 +385,6 @@
       document.querySelectorAll('input[name="partes"]:checked').forEach(cb => partes.push(cb.value));
 
       const record = {
-        fecha: new Date().toLocaleString(),
         candidato_nombre: nombre,
         candidato_rut: rut,
         candidato_correo: correo,
@@ -410,29 +402,33 @@
         otro_conflicto: document.getElementById('req-other').value
       };
 
-      // REEMPLAZA "tunombre" POR TU USUARIO DE PYTHONANYWHERE
-      fetch('https://tunombre.pythonanywhere.com/guardar', {
+      // Se apunta al backend en Vercel
+      fetch('/api/index', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
+        // Se envía el objeto JSON directamente para poblar las columnas separadas
         body: JSON.stringify(record)
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Error en la conexión con el servidor");
+        }
+        return response.json();
+      })
       .then(data => {
-        if (data.estado === "exito") {
+        if (data.status === "éxito") {
           viewForm.classList.add('hidden');
           viewSuccess.classList.remove('hidden');
           window.scrollTo(0, 0);
         } else {
-          alert("Error en el servidor: " + data.mensaje);
+          alert("Error al guardar: " + (data.detalle || "Desconocido"));
         }
       })
       .catch(error => {
-        console.log("Simulando éxito por falta de API backend activa...");
-        viewForm.classList.add('hidden');
-        viewSuccess.classList.remove('hidden');
-        window.scrollTo(0, 0);
+        alert("Hubo un problema de conexión al guardar los datos.");
+        console.error(error);
       })
       .finally(() => {
         btnSubmit.innerText = "Enviar";
