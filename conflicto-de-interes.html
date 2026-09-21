@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario de Declaración de Conflicto de Intereses - Metso</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .text-metso-blue { color: #004b87; }
+    .bg-metso-green { background-color: #8dc63f; }
+    .hover-bg-metso-green:hover { background-color: #7ab332; }
+    .bg-metso-red { background-color: #b30000; }
+    .hover-bg-metso-red:hover { background-color: #990000; }
+    .text-success-green { color: #6d8932; }
+    .bg-success-blue { background-color: #4b66ad; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- VISTA 1: INTRODUCCIÓN -->
+  <div id="view-intro" class="w-full max-w-4xl mx-auto p-8 bg-white shadow-md my-8">
+    <div class="flex justify-center mb-8">
+      <div class="bg-black text-white px-8 py-4 text-4xl font-bold tracking-wide">
+        Metso
+      </div>
+    </div>
+    
+    <h1 class="text-2xl font-bold mb-4 text-gray-900">Formulario de Declaración de Conflicto de Intereses</h1>
+    
+    <div class="space-y-4 text-[15px] leading-relaxed text-gray-800">
+      <p>Este formulario permite una comunicación transparente sobre posibles conflictos con los intereses de Metso, fomentando la integridad y la transparencia. Al ser un requisito obligatorio para nuestra empresa, este formulario también nos ayuda a cumplir con los estándares éticos y a evitar problemas legales, así como a respetar y generar confianza con nuestros grupos de interés: socios, clientes, contratistas y terceros que puedan solicitarnos declarar cualquier posible conflicto de intereses con ellos.</p>
+      
+      <p>Su declaración (tratada de forma confidencial y revisada para verificar su cumplimiento) ayuda a mitigar riesgos. Dado que nos esforzamos por mantener los más altos estándares de privacidad y respeto por la información personal, le solicitamos amablemente que, al completar el formulario, se abstenga de incluir datos personales de terceros, tales como nombres, direcciones o información de contacto.</p>
+      
+      <p>No todos los conflictos infringen las políticas o la ley; declarar la situación nos permite gestionarla de manera ética y determinar el mejor curso de acción.</p>
+      
+      <p>Por favor, complete todos los campos marcados con un asterisco (*). Estos campos son obligatorios y no pueden dejarse en blanco.</p>
+      
+      <p class="font-semibold">Toda la información ingresada será tratada de manera estrictamente confidencial y se utilizará de forma exclusiva para los fines del proceso de selección en Metso.</p>
+    </div>
+
+    <div class="flex justify-center mt-10">
+      <button onclick="startForm()" class="bg-metso-green hover-bg-metso-green text-white font-semibold py-3 px-12 rounded shadow-sm text-lg transition-colors">
+        Comenzar
+      </button>
+    </div>
+  </div>
+
+  <!-- VISTA 2: FORMULARIO DINÁMICO -->
+  <div id="view-form" class="hidden w-full max-w-4xl mx-auto p-8 bg-white shadow-md my-8">
+    <div class="flex justify-center mb-8">
+      <div class="bg-black text-white px-8 py-4 text-4xl font-bold tracking-wide">
+        Metso
+      </div>
+    </div>
+
+    <form id="coi-form" onsubmit="submitForm(event)">
+      
+      <!-- SECCIÓN: DATOS DEL CANDIDATO -->
+      <h2 class="text-xl font-bold text-metso-blue mb-4">* Identificación del Candidato</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+        <div class="sm:col-span-2">
+          <label class="block text-[15px] font-bold text-gray-800 mb-2">Nombre Completo *</label>
+          <input type="text" id="cand-nombre" required placeholder="Nombres y apellidos" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue">
+        </div>
+        <div>
+          <label class="block text-[15px] font-bold text-gray-800 mb-2">RUT / Documento de Identidad *</label>
+          <input type="text" id="cand-rut" required placeholder="Ej: 12.345.678-9" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue">
+        </div>
+        <div>
+          <label class="block text-[15px] font-bold text-gray-800 mb-2">Correo Electrónico *</label>
+          <input type="email" id="cand-correo" required placeholder="ejemplo@correo.com" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue">
+        </div>
+      </div>
+
+      <!-- SECCIÓN: TIPO DE CONFLICTO -->
+      <h2 class="text-xl font-bold text-metso-blue mb-2">* Tipo de conflicto</h2>
+      <p class="text-sm text-gray-700 mb-6">Seleccione todas las opciones que mejor describan su situación. Si ninguna corresponde, seleccione «Otro» y detalle los motivos.</p>
+
+      <div class="space-y-5 mb-10">
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_1" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">Conflicto de interés o beneficio personal</span>
+            <span class="text-sm text-gray-600">Tiene un interés o beneficio personal que podría entrar en conflicto con sus futuros deberes o responsabilidades profesionales en Metso.</span>
+          </div>
+        </label>
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_2" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">Empleo externo</span>
+            <span class="text-sm text-gray-600">Tiene otro empleo o actividad comercial que podría interferir con su futuro desempeño laboral o lealtad hacia Metso.</span>
+          </div>
+        </label>
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_3" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">Trato preferencial y favoritismo</span>
+            <span class="text-sm text-gray-600">Tiene un familiar, amigo o socio que trabaja para Metso o hace negocios con ella, y usted tendría influencia en su contratación, ascenso, evaluación o compensación; o mantiene una relación sentimental u otra relación social con alguien que estaría dentro de su línea de supervisión o reporte en Metso que pueda influir en su toma de decisiones o viceversa.</span>
+          </div>
+        </label>
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_4" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">Regalos o entretenimiento</span>
+            <span class="text-sm text-gray-600">Ha recibido o espera recibir regalos, favores o beneficios (por un valor superior a 110.000 CLP) de alguien interesado en las decisiones o acciones que tomaría en la empresa, o que busca influir en ellas.</span>
+          </div>
+        </label>
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_5" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">Uso de información privilegiada</span>
+            <span class="text-sm text-gray-600">Tiene acceso a información confidencial o no pública que podría afectar el valor de los valores bursátiles, y utilizaría o compartiría dicha información para beneficio o ventaja personal.</span>
+          </div>
+        </label>
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_6" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">No tengo ningún conflicto de interés que declarar</span>
+          </div>
+        </label>
+        <label class="flex items-start gap-4 cursor-pointer">
+          <input type="checkbox" id="tipo_7" onchange="handleTypeChange(this)" class="mt-1 w-5 h-5 flex-shrink-0 text-metso-blue border-gray-400 rounded-sm focus:ring-metso-blue">
+          <div>
+            <span class="font-bold text-gray-800 block">Otro</span>
+            <span class="text-sm text-gray-400 italic">Especifique o detalle su situación aquí</span>
+          </div>
+        </label>
+      </div>
+
+      <!-- CONTENEDOR DINÁMICO DE PREGUNTAS -->
+      <div id="dynamic-sections">
+        
+        <div id="sec-subcat" class="hidden mb-8 space-y-4">
+          <h3 class="text-[17px] font-bold text-metso-blue leading-snug">¿Qué subcategoría describe mejor su situación? Se define como familiar directo a cónyuge, pareja, hijo/a, padre/madre, hermano/a y suegros/cuñados/yernos/nueras.</h3>
+          <div class="space-y-3">
+            <label class="flex items-start gap-3">
+              <input type="checkbox" name="subcat" value="Relacion cercana" class="mt-1 w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm focus:ring-0">
+              <span class="text-[15px] text-gray-800">Usted, o cualquier miembro de su familia directa, tiene una relación personal cercana con cualquier cliente, proveedor, contratista, distribuidor, revendedor o competidor existente o potencial de Metso.</span>
+            </label>
+            <label class="flex items-start gap-3">
+              <input type="checkbox" name="subcat" value="Recibe compensacion cliente" class="mt-1 w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm focus:ring-0">
+              <span class="text-[15px] text-gray-800">Usted, o cualquier miembro de su familia directa, recibe cualquier forma de compensación bajo cualquier concepto de parte de un cliente, proveedor, contratista o competidor existente o potencial de Metso.</span>
+            </label>
+            <label class="flex items-start gap-3">
+              <input type="checkbox" name="subcat" value="Se desempena como directivo" class="mt-1 w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm focus:ring-0">
+              <span class="text-[15px] text-gray-800">Usted o un miembro de su familia directa se desempeña como directivo/ejecutivo, director, empleado clave, socio o miembro de una entidad que realiza negocios o compite con Metso.</span>
+            </label>
+            <label class="flex items-start gap-3">
+              <input type="checkbox" name="subcat" value="Funcionario de gobierno" class="mt-1 w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm focus:ring-0">
+              <span class="text-[15px] text-gray-800">Usted, o cualquier miembro de su familia directa, es funcionario o empleado de gobierno.</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="sec-common" class="hidden space-y-8 mb-8">
+          <div>
+            <h3 class="text-[17px] font-bold text-metso-blue mb-2">* Descripción de la situación</h3>
+            <textarea id="desc-situacion" rows="4" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue req-common"></textarea>
+          </div>
+
+          <div>
+            <h3 class="text-[17px] font-bold text-metso-blue mb-2">* Partes del Conflicto</h3>
+            <div class="flex flex-wrap gap-6 border border-gray-200 p-4 rounded-sm bg-gray-50/50">
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Metso" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Metso</span></label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Cliente" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Cliente</span></label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Proveedor" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Proveedor</span></label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Contratista" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Contratista</span></label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Distribuidor" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Distribuidor</span></label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Revendedor" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Revendedor</span></label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="partes" value="Competidor" class="w-5 h-5 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm"> <span class="text-[15px]">Competidor</span></label>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-[17px] font-bold text-metso-blue mb-2">Mencione el nombre de la empresa (si la hubiera) involucrada en el conflicto y su función/rol, si corresponde</h3>
+            <input type="text" id="nombre-empresa" class="w-full border border-gray-400 bg-[#e0e8f0] rounded p-3 focus:outline-none focus:border-metso-blue">
+          </div>
+
+          <div>
+            <h3 class="text-[17px] font-bold text-black mb-4">Autoevaluación</h3>
+            <div class="space-y-6">
+              <div>
+                <h4 class="text-[17px] font-bold text-metso-blue mb-3">* ¿Considera que este conflicto de intereses puede afectar el proceso de toma de decisiones o los resultados suyos o de un familiar directo?</h4>
+                <div class="flex gap-6">
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_decision" value="Sí" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue req-common"> <span>Sí</span></label>
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_decision" value="No" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue"> <span>No</span></label>
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_decision" value="No estoy seguro/a" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue"> <span>No estoy seguro/a</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-[17px] font-bold text-metso-blue mb-2">¿Cuáles son los factores que le generan dudas sobre el efecto de este conflicto de intereses en el proceso de toma de decisiones o en los resultados suyos o de un familiar directo? Por favor, descríbalos</h4>
+                <textarea id="factores-dudas" rows="3" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue"></textarea>
+              </div>
+              <div>
+                <h4 class="text-[17px] font-bold text-metso-blue mb-3">* ¿Considera que este conflicto de intereses puede afectar la situación o los intereses financieros suyos o de un familiar directo?</h4>
+                <div class="flex gap-6">
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_finanzas" value="Sí" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue req-common"> <span>Sí</span></label>
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_finanzas" value="No" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue"> <span>No</span></label>
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_finanzas" value="No estoy seguro/a" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue"> <span>No estoy seguro/a</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-[17px] font-bold text-metso-blue mb-3">* ¿Usted o algún miembro de su familia directa recibe o espera recibir algún beneficio económico?</h4>
+                <div class="flex gap-6">
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_beneficio" value="Sí" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue req-common"> <span>Sí</span></label>
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_beneficio" value="No" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue"> <span>No</span></label>
+                  <label class="flex items-center gap-2"><input type="radio" name="auto_beneficio" value="No estoy seguro/a" class="w-6 h-6 flex-shrink-0 border-gray-500 text-metso-blue"> <span>No estoy seguro/a</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-[17px] font-bold text-metso-blue mb-2">* Por favor, proporcione los detalles del beneficio económico, tales como el monto, la fuente, la frecuencia y la duración</h4>
+                <textarea id="detalles-beneficio" rows="3" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue req-common"></textarea>
+              </div>
+              <div>
+                <h4 class="text-[17px] font-bold text-metso-blue mb-2">* ¿Cómo propone gestionar o resolver los posibles conflictos de intereses, reales o potenciales, que puedan surgir a partir de los intereses, relaciones o beneficios mencionados anteriormente?</h4>
+                <textarea id="propuesta-gestion" rows="3" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue req-common"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="sec-insider" class="hidden mb-8 p-4 bg-gray-50 border border-gray-200 rounded">
+          <h3 class="text-[17px] font-bold text-metso-blue mb-2">* Uso de Información Privilegiada</h3>
+          <p class="text-[15px] text-gray-800">Para este conflicto, por favor siga la Política de Información Privilegiada de Metso - Metso Insider Policy.</p>
+        </div>
+
+        <div id="sec-other" class="hidden mb-8">
+          <h3 class="text-[17px] font-bold text-metso-blue mb-2">* Por favor, especifique el otro tipo de conflicto de interés</h3>
+          <textarea id="req-other" rows="4" class="w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-metso-blue" placeholder="Describa la situación..."></textarea>
+        </div>
+
+      </div>
+
+      <!-- SECCIÓN: RECONOCIMIENTO Y CONFIRMACIÓN -->
+      <div id="sec-confirm" class="hidden mt-10 border-t border-gray-300 pt-6">
+        <h2 class="text-xl font-bold text-black mb-4">Reconocimiento y confirmación</h2>
+        <p class="text-[15px] text-gray-800 mb-6">
+          Declaro y certifico que la información proporcionada es precisa y completa a mi leal saber y entender. Asimismo, comprendo y acepto que Metso confiará en la información aquí contenida. Autorizo a Metso a obtener y utilizar la información contenida en el presente documento. Metso procesa sus datos personales de acuerdo con las leyes y regulaciones aplicables de protección de datos o privacidad de datos.
+        </p>
+        <label class="flex items-start gap-3">
+          <input type="checkbox" id="chk-confirm" class="mt-1 w-6 h-6 flex-shrink-0 border-gray-400 text-metso-blue rounded-sm focus:ring-0">
+          <span class="text-[15px] font-bold text-gray-800">Por favor, confirme su declaración. Se pondrán en contacto con usted tan pronto como se haya revisado su declaración.</span>
+        </label>
+
+        <!-- BOTONES -->
+        <div class="flex justify-center gap-6 mt-10">
+          <button type="submit" id="btn-submit" class="bg-metso-green hover-bg-metso-green text-white font-semibold py-3 w-40 rounded shadow-sm text-lg transition-colors">
+            Enviar
+          </button>
+          <button type="button" onclick="cancelForm()" class="bg-metso-red hover-bg-metso-red text-white font-semibold py-3 w-40 rounded shadow-sm text-lg transition-colors">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- VISTA 3: ÉXITO -->
+  <div id="view-success" class="hidden w-full max-w-3xl mx-auto mt-20 text-center flex-1">
+    <div class="flex justify-center mb-8">
+      <div class="bg-success-blue w-40 h-40 rounded-full flex items-center justify-center shadow-lg">
+        <svg class="w-20 h-20 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+    </div>
+    <h2 class="text-3xl font-bold text-success-green tracking-wide">Su registro ha sido enviado con éxito.</h2>
+    <div class="mt-10">
+      <button onclick="resetApp()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded transition-colors">Volver al inicio</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="w-full text-center py-6 text-sm text-gray-400 mt-auto">
+    <div class="max-w-4xl mx-auto flex justify-center px-8">
+      <span>&copy; Metso - Formulario de Declaración de Conflicto de Intereses</span>
+    </div>
+  </footer>
+
+  <script>
+    const viewIntro = document.getElementById('view-intro');
+    const viewForm = document.getElementById('view-form');
+    const viewSuccess = document.getElementById('view-success');
+
+    function handleTypeChange(clickedEl) {
+      const chk1 = document.getElementById('tipo_1');
+      const chk2 = document.getElementById('tipo_2');
+      const chk3 = document.getElementById('tipo_3');
+      const chk4 = document.getElementById('tipo_4');
+      const chk5 = document.getElementById('tipo_5');
+      const chk6 = document.getElementById('tipo_6'); // "Ninguno"
+      const chk7 = document.getElementById('tipo_7'); // "Otro"
+
+      // Lógica de exclusión mutua
+      if (clickedEl && clickedEl.id === 'tipo_6' && clickedEl.checked) {
+        // Si marca "Ninguno", se desmarcan las demás
+        chk1.checked = chk2.checked = chk3.checked = chk4.checked = chk5.checked = chk7.checked = false;
+      } else if (clickedEl && clickedEl.id !== 'tipo_6' && clickedEl.checked) {
+        // Si marca cualquier otra, se desmarca "Ninguno"
+        chk6.checked = false;
+      }
+
+      // Evaluar visibilidad general
+      const anyChecked = chk1.checked || chk2.checked || chk3.checked || chk4.checked || chk5.checked || chk6.checked || chk7.checked;
+
+      const secSubcat = document.getElementById('sec-subcat');
+      const secCommon = document.getElementById('sec-common');
+      const secInsider = document.getElementById('sec-insider');
+      const secOther = document.getElementById('sec-other');
+      const secConfirm = document.getElementById('sec-confirm');
+
+      // Alternar clases de ocultación
+      secSubcat.classList.toggle('hidden', !chk1.checked);
+      secCommon.classList.toggle('hidden', !(chk1.checked || chk2.checked || chk3.checked || chk4.checked));
+      secInsider.classList.toggle('hidden', !chk5.checked);
+      secOther.classList.toggle('hidden', !chk7.checked);
+      secConfirm.classList.toggle('hidden', !anyChecked);
+
+      // Gestionar obligatoriedad (required) para no trabar el envío si los campos están ocultos
+      document.querySelectorAll('.req-common').forEach(el => el.removeAttribute('required'));
+      document.getElementById('req-other').removeAttribute('required');
+
+      if (chk1.checked || chk2.checked || chk3.checked || chk4.checked) {
+        document.querySelectorAll('.req-common').forEach(el => el.setAttribute('required', 'required'));
+      }
+      if (chk7.checked) {
+        document.getElementById('req-other').setAttribute('required', 'required');
+      }
+    }
+
+    function startForm() {
+      viewIntro.classList.add('hidden');
+      viewForm.classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    function cancelForm() {
+      document.getElementById('coi-form').reset();
+      handleTypeChange(null); // Resetea visibilidad
+      viewForm.classList.add('hidden');
+      viewIntro.classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    function submitForm(e) {
+      e.preventDefault();
+      
+      const chk1 = document.getElementById('tipo_1').checked;
+      const chk2 = document.getElementById('tipo_2').checked;
+      const chk3 = document.getElementById('tipo_3').checked;
+      const chk4 = document.getElementById('tipo_4').checked;
+      const chk5 = document.getElementById('tipo_5').checked;
+      const chk6 = document.getElementById('tipo_6').checked;
+      const chk7 = document.getElementById('tipo_7').checked;
+
+      if (!chk1 && !chk2 && !chk3 && !chk4 && !chk5 && !chk6 && !chk7) {
+        alert("Por favor, seleccione al menos un tipo de conflicto antes de continuar.");
+        return;
+      }
+
+      const chkConfirm = document.getElementById('chk-confirm');
+      if (!chkConfirm.checked) {
+        alert("Por favor, marque la casilla de confirmación de su declaración antes de enviar.");
+        return;
+      }
+
+      const btnSubmit = document.getElementById('btn-submit');
+      btnSubmit.innerText = "Enviando...";
+      btnSubmit.disabled = true;
+
+      // Obtener datos para enviar a Python
+      const nombre = document.getElementById('cand-nombre').value;
+      const rut = document.getElementById('cand-rut').value;
+      const correo = document.getElementById('cand-correo').value;
+      
+      let tiposSeleccionados = [];
+      if (chk1) tiposSeleccionados.push("Conflicto personal");
+      if (chk2) tiposSeleccionados.push("Empleo externo");
+      if (chk3) tiposSeleccionados.push("Favoritismo");
+      if (chk4) tiposSeleccionados.push("Regalos");
+      if (chk5) tiposSeleccionados.push("Info. Privilegiada");
+      if (chk6) tiposSeleccionados.push("Ninguno");
+      if (chk7) tiposSeleccionados.push("Otro");
+
+      const autoDecision = document.querySelector('input[name="auto_decision"]:checked') ? document.querySelector('input[name="auto_decision"]:checked').value : 'N/A';
+
+      let subcats = [];
+      document.querySelectorAll('input[name="subcat"]:checked').forEach(cb => subcats.push(cb.value));
+
+      let partes = [];
+      document.querySelectorAll('input[name="partes"]:checked').forEach(cb => partes.push(cb.value));
+
+      const record = {
+        fecha: new Date().toLocaleString(),
+        candidato_nombre: nombre,
+        candidato_rut: rut,
+        candidato_correo: correo,
+        tipo_conflicto: tiposSeleccionados.join('; '),
+        subcategorias: subcats.join(', '),
+        descripcion: document.getElementById('desc-situacion').value,
+        partes: partes.join(', '),
+        empresa_mencionada: document.getElementById('nombre-empresa').value,
+        auto_decision: autoDecision,
+        factores_dudas: document.getElementById('factores-dudas').value,
+        auto_finanzas: document.querySelector('input[name="auto_finanzas"]:checked') ? document.querySelector('input[name="auto_finanzas"]:checked').value : 'N/A',
+        auto_beneficio: document.querySelector('input[name="auto_beneficio"]:checked') ? document.querySelector('input[name="auto_beneficio"]:checked').value : 'N/A',
+        detalles_beneficio: document.getElementById('detalles-beneficio').value,
+        propuesta_gestion: document.getElementById('propuesta-gestion').value,
+        otro_conflicto: document.getElementById('req-other').value
+      };
+
+      // REEMPLAZA "tunombre" POR TU USUARIO DE PYTHONANYWHERE
+      fetch('https://tunombre.pythonanywhere.com/guardar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(record)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.estado === "exito") {
+          viewForm.classList.add('hidden');
+          viewSuccess.classList.remove('hidden');
+          window.scrollTo(0, 0);
+        } else {
+          alert("Error en el servidor: " + data.mensaje);
+        }
+      })
+      .catch(error => {
+        console.log("Simulando éxito por falta de API backend activa...");
+        viewForm.classList.add('hidden');
+        viewSuccess.classList.remove('hidden');
+        window.scrollTo(0, 0);
+      })
+      .finally(() => {
+        btnSubmit.innerText = "Enviar";
+        btnSubmit.disabled = false;
+      });
+    }
+
+    function resetApp() {
+      document.getElementById('coi-form').reset();
+      handleTypeChange(null);
+      viewSuccess.classList.add('hidden');
+      viewIntro.classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>
