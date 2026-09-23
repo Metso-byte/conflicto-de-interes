@@ -346,7 +346,7 @@
       viewIntro.classList.add('hidden');
       viewForm.classList.remove('hidden');
       window.scrollTo(0, 0);
-    
+    }
 
     function cancelForm() {
       document.getElementById('coi-form').reset();
@@ -480,13 +480,13 @@
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
     let hasSigned = false;
-    let canvasInitialized = false;ype
+    let canvasInitialized = false;
 
     // Ajustar el tamaño del canvas al contenedor
     function resizeCanvas() {
-      const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
       canvas.width = canvas.offsetWidth * ratio;
-      canvas.height = canvas.offsetHeight * ratio;
+      canvas.height = (canvas.offsetHeight || 150) * ratio; // Se añadió el respaldo aquí por seguridad
       ctx.scale(ratio, ratio);
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
