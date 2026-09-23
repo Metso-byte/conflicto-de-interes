@@ -243,6 +243,18 @@
           <span class="text-[15px] font-bold text-gray-800">Por favor, confirme su declaración. Se pondrán en contacto con usted tan pronto como se haya revisado su declaración.</span>
         </label>
 
+        <!-- SECCIÓN DE FIRMA DIGITAL -->
+        <div class="mt-8 border border-gray-300 p-4 rounded bg-gray-50">
+          <h3 class="text-[17px] font-bold text-metso-blue mb-2">* Firma Digital</h3>
+          <p class="text-sm text-gray-600 mb-4">Por favor, firme en el recuadro a continuación utilizando su ratón o pantalla táctil.</p>
+          <div class="border border-dashed border-gray-400 bg-white" style="touch-action: none;">
+            <canvas id="signature-pad" class="w-full cursor-crosshair" height="150"></canvas>
+          </div>
+          <div class="flex justify-end mt-2">
+            <button type="button" onclick="clearSignature()" class="text-sm text-metso-red hover:underline">Limpiar firma</button>
+          </div>
+        </div>
+
         <!-- BOTONES -->
         <div class="flex justify-center gap-6 mt-10">
           <button type="submit" id="btn-submit" class="bg-metso-green hover-bg-metso-green text-white font-semibold py-3 w-40 rounded shadow-sm text-lg transition-colors">
@@ -327,11 +339,15 @@
       viewIntro.classList.add('hidden');
       viewForm.classList.remove('hidden');
       window.scrollTo(0, 0);
+      
+      // Ajustar canvas de firma una vez que el formulario sea visible
+      setTimeout(resizeCanvas, 50);
     }
 
     function cancelForm() {
       document.getElementById('coi-form').reset();
       handleTypeChange(null);
+      clearSignature();
       viewForm.classList.add('hidden');
       viewIntro.classList.remove('hidden');
       window.scrollTo(0, 0);
@@ -358,6 +374,15 @@
         alert("Por favor, marque la casilla de confirmación de su declaración antes de enviar.");
         return;
       }
+
+      // Validación de la firma
+      if (!hasSigned) {
+        alert("Por favor, dibuje su firma digital en el recuadro indicado.");
+        return;
+      }
+      
+      // Capturar firma en Base64
+      const firmaBase64 = canvas.toDataURL('image/png');
 
       const btnSubmit = document.getElementById('btn-submit');
       btnSubmit.innerText = "Enviando...";
@@ -399,16 +424,15 @@
         auto_beneficio: document.querySelector('input[name="auto_beneficio"]:checked') ? document.querySelector('input[name="auto_beneficio"]:checked').value : 'N/A',
         detalles_beneficio: document.getElementById('detalles-beneficio').value,
         propuesta_gestion: document.getElementById('propuesta-gestion').value,
-        otro_conflicto: document.getElementById('req-other').value
+        otro_conflicto: document.getElementById('req-other').value,
+        firma: firmaBase64 // Se añade la firma digital al envío
       };
 
-      // Se apunta al backend en Vercel
       fetch('/api/index', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        // Se envía el objeto JSON directamente para poblar las columnas separadas
         body: JSON.stringify(record)
       })
       .then(response => {
@@ -439,10 +463,81 @@
     function resetApp() {
       document.getElementById('coi-form').reset();
       handleTypeChange(null);
+      clearSignature();
       viewSuccess.classList.add('hidden');
       viewIntro.classList.remove('hidden');
       window.scrollTo(0, 0);
     }
+
+    // --- LÓGICA DE LA FIRMA DIGITAL ---
+    const canvas = document.getElementById('signature-pad');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let hasSigned = false;
+
+    // Ajustar el tamaño del canvas al contenedor
+    function resizeCanvas() {
+      const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      ctx.scale(ratio, ratio);
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#004b87'; // Azul Metso
+    }
+
+    function getCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches && e.touches.length > 0) {
+        return {
+          x: e.touches[0].clientX - rect.left,
+          y: e.touches[0].clientY - rect.top
+        };
+      }
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      e.preventDefault();
+      isDrawing = true;
+      hasSigned = true;
+      const pos = getCoordinates(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const pos = getCoordinates(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function stopDrawing(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+      isDrawing = false;
+    }
+
+    function clearSignature() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hasSigned = false;
+    }
+
+    // Eventos de ratón
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Eventos táctiles (móviles/tablets)
+    canvas.addEventListener('touchstart', startDrawing, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
   </script>
 </body>
 </html>
