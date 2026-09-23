@@ -324,6 +324,13 @@
       secOther.classList.toggle('hidden', !chk7.checked);
       secConfirm.classList.toggle('hidden', !anyChecked);
 
+      if (anyChecked && !canvasInitialized) {
+        setTimeout(() => {
+          resizeCanvas();
+          canvasInitialized = true;
+        }, 50);
+      }
+
       document.querySelectorAll('.req-common').forEach(el => el.removeAttribute('required'));
       document.getElementById('req-other').removeAttribute('required');
 
@@ -339,15 +346,13 @@
       viewIntro.classList.add('hidden');
       viewForm.classList.remove('hidden');
       window.scrollTo(0, 0);
-      
-      // Ajustar canvas de firma una vez que el formulario sea visible
-      setTimeout(resizeCanvas, 50);
-    }
+    
 
     function cancelForm() {
       document.getElementById('coi-form').reset();
       handleTypeChange(null);
       clearSignature();
+      canvasInitialized = false;
       viewForm.classList.add('hidden');
       viewIntro.classList.remove('hidden');
       window.scrollTo(0, 0);
@@ -464,6 +469,7 @@
       document.getElementById('coi-form').reset();
       handleTypeChange(null);
       clearSignature();
+      canvasInitialized = false;
       viewSuccess.classList.add('hidden');
       viewIntro.classList.remove('hidden');
       window.scrollTo(0, 0);
@@ -474,6 +480,7 @@
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
     let hasSigned = false;
+    let canvasInitialized = false;ype
 
     // Ajustar el tamaño del canvas al contenedor
     function resizeCanvas() {
